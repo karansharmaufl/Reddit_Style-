@@ -1,0 +1,5 @@
+<%=link_to("Back To List", links_path) %>
+<%= form_for(@link , :method => 'delete') do |f|%>
+<p>Are you sure you want to delete the subject</p>
+<%= f.submit("Delete")  %>
+<% end %>

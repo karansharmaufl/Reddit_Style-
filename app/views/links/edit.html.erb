@@ -1,0 +1,9 @@
+<%= link_to("Back To List" , links_path)%>
+<%=form_for @link do |f| %>
+<%= f.label :Title %>
+<%= f.text_field :title%><br/>
+<%= f.label :URL%>
+<%= f.text_field :url%><br/>
+<%= f.submit("Submit")%>
+<%end%>
+
