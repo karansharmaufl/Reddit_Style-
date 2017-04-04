@@ -12,10 +12,16 @@ gem 'rails', '~> 5.0.2'
 gem 'devise', '~> 4.2', '>= 4.2.1'
 gem 'simple_form', '~> 3.2', '>= 3.2.1'
 gem 'record_tag_helper'
-# Use sqlite3 as the database for Active Record
-#gem 'sqlite3'
-gem 'sqlite3', group: :development # Added development group.
-gem 'pg', group: :production # Added postgres and made it production only.
+
+group :development do
+  gem 'sqlite3'
+end
+
+group :production do
+  gem 'pg'
+  gem 'rails_12factor'
+end
+
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
