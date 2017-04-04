@@ -1,22 +1,54 @@
-<h1> Detailed Information</h1>
-<table>
-  <tr>
-    <th>Title</th>
-    <td><%= @link.title%></td>
-  </tr>
+<div class="page-header">
+    <h1><a href="<%= @link.url %>"><%= @link.title %></a><br> <small>Submitted by <%= @link.user.email %></small></h1>
+</div>
 
-  <tr>
-    <th>URL</th>
-    <td><%= @link.url%></td>
-  </tr>
+<div class="btn-group">
+    <%= link_to 'Visit URL', @link.url, class: "btn btn-primary" %>
+</div>
 
-  <tr>
-    <th>Created_At</th>
-    <td><%= @link.created_at %> </td>
-  </tr>
+<div class="btn-group pull-right">
+   <%= link_to like_link_path(@link), method: :put, class: "btn btn-default btn-sm" do %>
+   <span class="glyphicon glyphicon-chevron-up"></span>
+   Like
+   <%= @link.get_upvotes.size %>
+   <% end %>
+   <%= link_to dislike_link_path(@link), method: :put, class: "btn btn-default btn-sm" do %>
+   <span class="glyphicon glyphicon-chevron-down">
+    Dislike
+    <%= @link.get_downvotes.size %>
+   <% end %>
+</div>
 
-  <tr>
-    <th> Updated_at </th>
-    <td> <%= @link.updated_at %> <td>
-  </tr>
-</table>
+<% if @link.user == current_user -%>
+    <div class="btn-group">
+      <%= link_to 'Edit', edit_link_path(@link), class: "btn btn-default" %>
+      <%= link_to 'Destroy', @link, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default" %>
+    </div>
+<% end %>
+
+
+
+
+  <% @link.comments.each do |comment|%>
+      <div class="comments_wrapper clearfix">
+         <div class="pull-left">
+             <p class="lead"><%= comment.body %></p>
+             <p><small>Submitted <strong><%= time_ago_in_words(comment.created_at) %> ago</strong> by
+             <%=@link.user.email%>
+             </small></p>
+         </div>
+         <div class="btn-group pull-right">
+           <% if @link.user == current_user -%>
+             <%= link_to 'Destroy', comment_path(comment), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-default" %>
+           <%end%>
+         </div>
+      </div>
+  <%end%>
+
+
+  <%= simple_form_for [@link, Comment.new]  do |f| %>
+      <div class="field">
+           <%= f.text_area :body, class: "form-control" %>
+      </div>  <br>
+           <%= f.submit "Add Comment", class: "btn btn-primary" %>
+    <% end %>

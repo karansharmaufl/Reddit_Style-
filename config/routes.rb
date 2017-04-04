@@ -1,11 +1,15 @@
 Rails.application.routes.draw do
+  resources :comments
   devise_for :users
   get 'links/index'
 
   resources :links do
     member do
       get:delete
+      put "like" ,   to: "links#upvote"
+      put "dislike", to: "links#downvote"
     end
+    resources :comments
   end
 
   root 'links#index'
